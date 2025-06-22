@@ -65,10 +65,10 @@ export const registerUser = async (req, res) => {
       const referrer = await User.findById(referredBy);
       referrer.referrals.push(newUser._id);
       await referrer.save();
-    }
 
-    const io = req.app.get("io"); 
+      const io = req.app.get("io"); 
     await handleReferralNotifications({ newUser, referrer, io });
+    }
 
     res.status(201).json({
       message: "User registered successfully. Please log in.",

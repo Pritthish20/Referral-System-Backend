@@ -9,6 +9,7 @@
     "debug": "nodemon --inspect main.js",
     "start": "node main.js",
     "lint": "npx eslint . --fix"
+    
   },
   "keywords": [],
   "author": "",

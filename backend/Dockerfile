@@ -18,4 +18,5 @@ RUN npm run lint
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "server"]
+CMD ["npm", "start"]
+

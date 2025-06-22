@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { validateReferral } from "../utils/validateReferral.js";
 import { generateUniqueReferralCode } from "../utils/generateReferralCode.js";
 import jwt from "jsonwebtoken";
+import { handleReferralNotifications } from "../services/notifyReferral.js";
 
 // ✅ Register a new user
 export const registerUser = async (req, res) => {
@@ -66,21 +67,8 @@ export const registerUser = async (req, res) => {
       await referrer.save();
     }
 
-    const io = req.app.get("io"); // get io instance from app
-    io.to(referrer._id.toString()).emit("newReferral", {
-      referralName: newUser.name,
-      level: 1,
-    });
-
-    if (referrer.referredBy) {
-      const level2User = await User.findById(referrer.referredBy);
-      if (level2User) {
-        io.to(level2User._id.toString()).emit("newReferral", {
-          referralName: newUser.name,
-          level: 2,
-        });
-      }
-    }
+    const io = req.app.get("io"); 
+    await handleReferralNotifications({ newUser, referrer, io });
 
     res.status(201).json({
       message: "User registered successfully. Please log in.",

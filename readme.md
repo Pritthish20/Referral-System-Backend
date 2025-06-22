@@ -22,12 +22,23 @@ A full-stack backend system designed to handle user registrations, multi-level r
 ## 🚀 Features
 
 ### Core Features
-- ✅ Multi-level referral system (2 levels deep)
-- ✅ JWT-based authentication (access + refresh tokens)
-- ✅ Real-time earnings notifications via Socket.IO
-- ✅ Automated commission distribution
-- ✅ User management and admin controls
-- ✅ Comprehensive earnings tracking
+- 💸 Multi-Level Referral System – Users can refer others and earn from both direct (Level 1) and indirect (Level 2) referrals.
+
+- 🧠 Earnings Logic – Real-time distribution of profits: 5% from Level 1 and 1% from Level 2.
+
+- 🔐 Secure Authentication – JWT-based access/refresh token flow with cookie security and role-based access.
+
+- 📊 Referral Analytics – Users can view their full referral tree, referral stats, and detailed earnings history.
+
+- 📡 Real-Time Notifications – Instant earning and referral updates using Socket.IO when users are online.
+
+- 🕓 Offline Notifications – Notifications are saved in the DB when users are offline and can be fetched later.
+
+- ✅ Referral Validation – Only active, unblocked users can refer, and a maximum of 8 direct referrals is enforced.
+
+- ⚙️ Admin Control – Admins can view all users, manage statuses (block/unblock), and access global earnings reports.
+
+- 🧩 Modular Design – Clear separation of concerns with reusable services for consistent feature implementation.
 
 ### Business Logic
 - **Referral Limits:** Max 8 direct referrals per user

@@ -33,6 +33,11 @@ app.get("/", (req, res) => {
     res.send("server is running fine");
   });
 
+  app.get('/healthz', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
+
 //routes
 app.use("/api/v1/user",userRoute);
 app.use("/api/v1/auth",authRoute);

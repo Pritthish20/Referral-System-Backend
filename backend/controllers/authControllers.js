@@ -66,6 +66,22 @@ export const registerUser = async (req, res) => {
       await referrer.save();
     }
 
+    const io = req.app.get("io"); // get io instance from app
+    io.to(referrer._id.toString()).emit("newReferral", {
+      referralName: newUser.name,
+      level: 1,
+    });
+
+    if (referrer.referredBy) {
+      const level2User = await User.findById(referrer.referredBy);
+      if (level2User) {
+        io.to(level2User._id.toString()).emit("newReferral", {
+          referralName: newUser.name,
+          level: 2,
+        });
+      }
+    }
+
     res.status(201).json({
       message: "User registered successfully. Please log in.",
       user: {
@@ -82,7 +98,6 @@ export const registerUser = async (req, res) => {
   }
 };
 
-
 // ✅ Login user
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -94,8 +109,10 @@ export const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
     if (!user.isActive || user.isBlocked) {
-    return res.status(403).json({ message: 'Your account is inactive or blocked. Please contact support.' });
-  }
+      return res.status(403).json({
+        message: "Your account is inactive or blocked. Please contact support.",
+      });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)

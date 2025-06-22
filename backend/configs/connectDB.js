@@ -20,7 +20,7 @@ const connectDB = async () => {
       if (attempts < maxAttempts) {
         setTimeout(tryConnect, 5000);
       } else {
-        console.error("❌ Max retries reached. Exiting...");
+        console.error(`❌ Max retries reached. Exiting... : ${error.message}`);
         process.exit(1);
       }
     }

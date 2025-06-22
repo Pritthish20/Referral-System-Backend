@@ -2,6 +2,8 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import cors from "cors";
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
 //flies
 import connectDB from './configs/connectDB.js';
@@ -15,6 +17,18 @@ dotenv.config();
 connectDB();
 
 const app=express();
+
+// 🛡️ Add security middlewares
+app.use(helmet());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 mins
+  max: 100, // 100 requests per IP
+  message: 'Too many requests from this IP, try again after 15 minutes.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
 
 //middleware
 app.use(

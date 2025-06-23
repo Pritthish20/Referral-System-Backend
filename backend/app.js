@@ -18,6 +18,9 @@ connectDB();
 
 const app=express();
 
+// 🔧 Trust the Render proxy so rate-limiting & IP detection works
+app.set('trust proxy', 1);
+
 // 🛡️ Add security middlewares
 app.use(helmet());
 
